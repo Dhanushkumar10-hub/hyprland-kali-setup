@@ -1,0 +1,106 @@
+* {
+    bg0: #0a0e14;
+    bg1: #1a1f2e;
+    bg2: #252d3d;
+    
+    fg0: #00ff66;
+    fg1: #00ffff;
+    
+    accent: #ff0055;
+    success: #00ff66;
+    
+    background-color: @bg0;
+    foreground-color: @fg0;
+    border-color: @fg1;
+    text-color: @fg0;
+}
+
+window {
+    border: 2px solid @border-color;
+    border-radius: 8px;
+    background-color: @bg0;
+    text-color: @fg0;
+    padding: 20px;
+    width: 800px;
+    location: center;
+    anchor: center;
+    x-offset: 0;
+    y-offset: 0;
+}
+
+mainbox {
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    background-color: @bg0;
+    children: [inputbar, listview];
+    spacing: 15px;
+    margin: 0;
+}
+
+inputbar {
+    border: 2px solid @fg1;
+    border-radius: 5px;
+    padding: 10px 15px;
+    background-color: @bg1;
+    text-color: @fg0;
+    children: [prompt, entry];
+    spacing: 10px;
+}
+
+prompt {
+    background-color: @bg1;
+    text-color: @fg1;
+    font: "JetBrains Mono 12";
+    padding: 5px;
+}
+
+entry {
+    background-color: @bg1;
+    text-color: @fg0;
+    padding: 5px;
+    cursor: text;
+}
+
+listview {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    columns: 2;
+    lines: 8;
+    spacing: 10px;
+    scrollbar: false;
+    dynamic: true;
+}
+
+element {
+    border: 2px solid @bg2;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: @bg1;
+    text-color: @fg0;
+}
+
+element.selected,
+element.active {
+    background-color: @bg2;
+    border-color: @fg1;
+    text-color: @success;
+    font: "JetBrains Mono Bold 12";
+}
+
+element:hover {
+    background-color: @bg2;
+    border-color: @fg0;
+    text-color: @fg1;
+}
+
+element-text {
+    text-color: inherit;
+    vertical-align: 0.5;
+}
+
+element-icon {
+    size: 24px;
+    margin: 0 10px 0 0;
+}

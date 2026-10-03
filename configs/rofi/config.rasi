@@ -1,0 +1,37 @@
+configuration {
+    font: "JetBrains Mono 12";
+    show-icons: true;
+    icon-theme: "Papirus-Dark";
+    terminal: "kitty";
+    
+    modi: "drun,run,window";
+    
+    /* Sizing */
+    width: 50%;
+    lines: 15;
+    columns: 2;
+    
+    /* Positioning */
+    location: center;
+    anchor: center;
+    
+    /* Display options */
+    display-drun: " ";
+    display-run: "Run";
+    display-window: "Windows";
+    
+    /* Scrolling */
+    scroll-method: 1;
+    scrollbar: false;
+    
+    /* Search */
+    matching: "glob";
+    levenshtein-sort: true;
+    
+    /* Misc */
+    parse-known-hosts: false;
+    application-fallback-icon-theme: "Papirus-Dark";
+    threads: 0;
+}
+
+@theme "cyberpunk"

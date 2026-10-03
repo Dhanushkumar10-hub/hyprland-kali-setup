@@ -1,0 +1,81 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 30,
+    "spacing": 10,
+    "margin-top": 0,
+    "margin-bottom": 0,
+    "margin-left": 0,
+    "margin-right": 0,
+    
+    "modules-left": ["hyprland/workspaces", "hyprland/submap"],
+    "modules-center": ["hyprland/window"],
+    "modules-right": ["pulseaudio", "network", "battery", "clock"],
+    
+    "hyprland/workspaces": {
+        "format": "{}",
+        "format-icons": {
+            "active": "󰝥",
+            "default": "󰝤",
+            "empty": "󰝢",
+            "urgent": "󰝤"
+        },
+        "persistent-workspaces": {
+            "*": 5
+        }
+    },
+    
+    "hyprland/window": {
+        "format": "{}",
+        "separate-outputs": true,
+        "max-length": 50
+    },
+    
+    "hyprland/submap": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+    
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "󰝟 0%",
+        "format-icons": {
+            "headphone": "󰋋",
+            "hands-free": "󰋎",
+            "headset": "󰋎",
+            "phone": "󰏳",
+            "portable": "󰏳",
+            "car": "󰄋",
+            "default": ["󰕿", "󰖀", "󰕾"]
+        },
+        "on-click": "pavucontrol",
+        "scroll-step": 5
+    },
+    
+    "network": {
+        "format-wifi": "󰖩 {essid}",
+        "format-ethernet": "󰌘 Connected",
+        "format-disconnected": "󰌕 Disconnected",
+        "on-click": "nm-connection-editor",
+        "tooltip-format": "{ifname}\n{ipaddr}/{cidr}"
+    },
+    
+    "battery": {
+        "states": {
+            "good": 80,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-plugged": "󰂅 {capacity}%",
+        "format-alt": "{time} {icon}",
+        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    },
+    
+    "clock": {
+        "timezone": "UTC",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format-alt": "{:%Y-%m-%d}",
+        "format": "󰃰 {:%H:%M}"
+    }
+}
