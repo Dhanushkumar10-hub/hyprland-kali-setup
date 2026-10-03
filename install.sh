@@ -36,9 +36,9 @@ print_warning() {
 }
 
 # Check if running on Kali Linux
-if ! grep -qi "kali" /etc/os-release; then
-    print_warning "This script is designed for Kali Linux"
-    print_warning "It may work on other Debian-based distros, but use at your own risk"
+if ! grep -qi "kali\|debian" /etc/os-release; then
+    print_warning "This script is designed for Kali Linux / Debian"
+    print_warning "It may work on other Linux distros, but use at your own risk"
     read -p "Continue anyway? (y/N) " -n 1 -r
     echo
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
@@ -59,14 +59,17 @@ echo -e "${CYAN}Setting up your neon-lit hacker paradise...${NC}\n"
 # Step 1: System Update
 print_header "STEP 1: System Update"
 print_step "Updating package lists..."
-apt update -qq
+apt update -qq || apt update
 print_step "Upgrading system packages..."
-apt upgrade -y -qq
+apt upgrade -y -qq || apt upgrade -y
 
 # Step 2: Install Core Dependencies
 print_header "STEP 2: Installing Core Dependencies"
 print_step "Installing build tools and development libraries..."
 apt install -y -qq \
+    git curl wget unzip build-essential gcc make pkg-config \
+    libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev 2>/dev/null || \
+apt install -y \
     git curl wget unzip build-essential gcc make pkg-config \
     libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev
 
@@ -76,16 +79,23 @@ print_step "Installing Hyprland and Wayland support..."
 apt install -y -qq \
     hyprland \
     xdg-desktop-portal-hyprland \
-    xdg-utils \
-    polkit-kde-agent
+    xdg-utils 2>/dev/null || \
+apt install -y \
+    hyprland \
+    xdg-desktop-portal-hyprland \
+    xdg-utils
+
+# Install polkit (alternative to polkit-kde-agent)
+print_step "Installing polkit for permissions..."
+apt install -y -qq polkit 2>/dev/null || apt install -y polkit
 
 # Step 4: Install Terminal & Shell Tools
 print_header "STEP 4: Installing Terminal & Shell Tools"
 print_step "Installing Kitty terminal..."
-apt install -y -qq kitty
+apt install -y -qq kitty 2>/dev/null || apt install -y kitty
 
 print_step "Installing Zsh shell..."
-apt install -y -qq zsh
+apt install -y -qq zsh 2>/dev/null || apt install -y zsh
 
 print_step "Installing Starship prompt..."
 curl -sS https://starship.rs/install.sh | sh -s -- -y > /dev/null 2>&1 || print_warning "Starship installation had issues"
@@ -93,27 +103,39 @@ curl -sS https://starship.rs/install.sh | sh -s -- -y > /dev/null 2>&1 || print_
 # Step 5: Install Launcher & Bar
 print_header "STEP 5: Installing Launcher & Status Bar"
 print_step "Installing Rofi application launcher..."
-apt install -y -qq rofi
+apt install -y -qq rofi 2>/dev/null || apt install -y rofi
 
 print_step "Installing Waybar status bar..."
-apt install -y -qq waybar
+apt install -y -qq waybar 2>/dev/null || apt install -y waybar
 
 # Step 6: Install System Utilities
 print_header "STEP 6: Installing System Utilities"
 apt install -y -qq \
     brightnessctl \
-    pamixer \
     pavucontrol \
     thunar \
     neofetch \
-    fastfetch \
     network-manager \
     htop \
-    btop \
     wl-clipboard \
     swaylock \
-    swaybg \
-    imagemagick
+    swaybg 2>/dev/null || \
+apt install -y \
+    brightnessctl \
+    pavucontrol \
+    thunar \
+    neofetch \
+    network-manager \
+    htop \
+    wl-clipboard \
+    swaylock \
+    swaybg
+
+# Try to install optional packages (may not exist on all systems)
+apt install -y -qq pamixer 2>/dev/null || print_warning "pamixer not available"
+apt install -y -qq fastfetch 2>/dev/null || print_warning "fastfetch not available"
+apt install -y -qq btop 2>/dev/null || print_warning "btop not available"
+apt install -y -qq imagemagick 2>/dev/null || print_warning "imagemagick not available"
 
 # Step 7: Install Fonts & Icons
 print_header "STEP 7: Installing Fonts & Icon Themes"
@@ -122,10 +144,15 @@ apt install -y -qq \
     fonts-jetbrains-mono \
     fonts-firacode \
     fonts-noto \
-    fonts-noto-color-emoji
+    fonts-noto-color-emoji 2>/dev/null || \
+apt install -y \
+    fonts-jetbrains-mono \
+    fonts-firacode \
+    fonts-noto
 
 print_step "Installing Papirus icon theme..."
-apt install -y -qq papirus-icon-theme adwaita-icon-theme
+apt install -y -qq papirus-icon-theme adwaita-icon-theme 2>/dev/null || \
+apt install -y papirus-icon-theme adwaita-icon-theme
 
 # Step 8: Copy Configuration Files
 print_header "STEP 8: Copying Configuration Files"
@@ -198,7 +225,7 @@ print_header "✨ INSTALLATION COMPLETE! ✨"
 echo -e "${GREEN}Your Cyberpunk Kali Linux Hyprland setup is ready!${NC}\n"
 echo -e "${CYAN}Next Steps:${NC}"
 echo -e "  1. ${YELLOW}Reboot your system:${NC}"
-echo -e "     ${CYAN}reboot${NC}"
+echo -e "     ${CYAN}sudo reboot${NC}"
 echo -e ""
 echo -e "  2. ${YELLOW}At the login screen, select:${NC}"
 echo -e "     ${CYAN}Hyprland${NC} (from the session selector)"
